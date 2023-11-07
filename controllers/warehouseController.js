@@ -33,7 +33,7 @@ const createWarehouse = async (req, res) =>{
     const data = req.body;
     if(!data.warehouse_name || !data.address || !data.city || !data.country || !data.contact_name || !data.contact_position || !data.contact_phone || !data.contact_email){
         return res.status(400).json({
-            message: "Please provide name and email for the user in the request",
+            message: "Please provide name and email for the warehoue in the request",
           });
     }
     // Check for valid email and phone number
@@ -57,7 +57,7 @@ const createWarehouse = async (req, res) =>{
 
     }catch(error){
         res.status(500).json({
-            message: `Unable to create new user: ${error}`,
+            message: `Unable to create new warehoue: ${error}`,
           });
     }
 }
