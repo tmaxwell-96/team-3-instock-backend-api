@@ -1,4 +1,14 @@
 const knex = require("knex")(require("../knexfile"));
+const getInventoryById = async (req, res) => {
+  try {
+    const data = await knex("inventories").where({
+      id: req.params.id,
+    });
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).send("Error retrieving Inventories: error");
+  }
+};
 
 const getInventoryListByWarehouseById = async (req, res) => {
   try {
@@ -20,4 +30,4 @@ const getInventoryListByWarehouseById = async (req, res) => {
   }
 };
 
-module.exports = { getInventoryListByWarehouseById };
+module.exports = { getInventoryById, getInventoryListByWarehouseById };
