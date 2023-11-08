@@ -10,19 +10,23 @@ app.use(express.json());
 app.use(cors({ origin: CORS_ORIGIN }));
 
 const warehouseRoutes = require("./routes/warehouseRoute");
+
 const invetoryRoutes = require("./routes/inventoryRoute");
 
 app.use("/warehouses", warehouseRoutes);
 app.use("/inventory", invetoryRoutes);
+
 
 //routes
 app.get("/", (req, res) => {
   res.send("Welcome to my API");
 });
 
+
 app.get("/", (req, res) => {
   res.send("Welocom to Inventory API");
 });
+
 
 app.listen(PORT, () => {
   console.log(`running at http://localhost:${PORT}`);
