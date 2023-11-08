@@ -1,6 +1,9 @@
 const router = require("express").Router();
 const inventoryController = require("./../controllers/inventoryController");
 
-router.route("/").post(inventoryController.createInventory);
+router
+  .route("/")
+  .get(inventoryController.getAllInventory)
+  .post(inventoryController.createInventory);
 
 module.exports = router;
