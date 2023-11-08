@@ -1,5 +1,19 @@
 const knex = require("knex")(require("../knexfile"));
 
+//GET a list of all inventory items
+const getAllInventory = async (_req, res) => {
+  try {
+    const data = await knex("inventories")
+      .join("warehouses", "warehouses.id", "inventories.warehouse_id")
+      .select("inventories.*", "warehouse_name as warehouse_name"); // Correct the alias here
+
+    res.status(200).json(data);
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    res.status(400).send("Error getting inventory list");
+  }
+};
+
 //POST Create new inventory item
 const createInventory = async (req, res) => {
   try {
@@ -19,4 +33,5 @@ const createInventory = async (req, res) => {
 
 module.exports = {
   createInventory,
+  getAllInventory,
 };
