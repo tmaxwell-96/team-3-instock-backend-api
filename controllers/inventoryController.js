@@ -30,4 +30,4 @@ const getInventoryListByWarehouseById = async (req, res) => {
   }
 };
 
-module.exports = { getInventoryListByWarehouseById };
+module.exports = { getInventoryListByWarehouseById, getInventoryById };
