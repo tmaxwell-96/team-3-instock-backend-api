@@ -2,9 +2,12 @@ const knex = require("knex")(require("../knexfile"));
 
 const getInventoryById = async (req, res) => {
   try {
-    const data = await knex("inventories").where({
-      id: req.params.id,
-    });
+    const data = await knex("inventories")
+      .join("warehouses", "warehouses.id", "inventories.warehouse_id")
+      .select("inventories.*", "warehouse_name as warehouse_name")
+      .where({
+        "inventories.id": req.params.id,
+      });
     res.status(200).json(data);
   } catch (error) {
     res.status(400).send("Error retrieving Inventories: error");
@@ -36,11 +39,11 @@ const getAllInventory = async (_req, res) => {
   try {
     const data = await knex("inventories")
       .join("warehouses", "warehouses.id", "inventories.warehouse_id")
-      .select("inventories.*", "warehouse_name as warehouse_name"); // Correct the alias here
+      .select("inventories.*", "warehouse_name as warehouse_name");
 
     res.status(200).json(data);
   } catch (error) {
-    console.error(error); // Log the error for debugging
+    console.error(error);
     res.status(400).send("Error getting inventory list");
   }
 };
