@@ -3,7 +3,7 @@ const inventoryController = require("./../controllers/inventoryController");
 
 router.route("/:id").get(inventoryController.getInventoryById);
 router
-  .route("/warehouses/:id/inventories")
+  .route("/warehouses/:id")
   .get(inventoryController.getInventoryListByWarehouseById);
 
 router
