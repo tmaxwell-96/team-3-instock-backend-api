@@ -12,4 +12,9 @@ router
   .get(inventoryController.getAllInventory)
   .post(inventoryController.createInventory);
 
+router.route("/:id").delete(inventoryController.deleteInventoryById);
+
+router.route("/:id").put(inventoryController.editInventoryById);
+
+
 module.exports = router;
