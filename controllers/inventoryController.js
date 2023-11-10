@@ -30,8 +30,22 @@ const createInventory = async (req, res) => {
     });
   }
 };
-
+//delete inventory item
+const remove = async (req, res) => {
+  try {
+    const inventorydelete = await knex("inventory")
+      .where({ id: req.params.id })
+      .del();
+    res.status(200).send(`Inventory with id has been successfully deleted`);
+    if (inventorydelete === 0) {
+      return res.status(404).send(`inventory id ${req.params.id} not found`);
+    }
+  } catch (error) {
+    res.status(400).send("Error removing inventory list");
+  }
+};
 module.exports = {
   createInventory,
   getAllInventory,
+  // remove,
 };
