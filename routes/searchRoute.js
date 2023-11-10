@@ -11,6 +11,7 @@ const searchRouteHandler = (req, res) => {
         })
         .catch((error) => {
           res.status(500).json(error);
+          
         });
     } else {
       res.status(400).json({ error: 'Invalid endpoint' });
