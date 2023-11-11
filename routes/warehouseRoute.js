@@ -5,7 +5,9 @@ router.route("/").get(warehouseController.getWarehouseList);
 router
   .route("/:id")
   .get(warehouseController.getWarehouseById)
+  .delete(warehouseController.deleteWarehouse)
   .put(warehouseController.changeWarehouse);
+
 router.route("/").post(warehouseController.createWarehouse);
 
 module.exports = router;

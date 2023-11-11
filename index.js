@@ -11,11 +11,20 @@ app.use(cors({ origin: CORS_ORIGIN }));
 
 const warehouseRoutes = require("./routes/warehouseRoute");
 
+const invetoryRoutes = require("./routes/inventoryRoute");
+const searchRoute = require("./routes/searchRoute");
+
 app.use("/warehouses", warehouseRoutes);
+app.use("/inventory", invetoryRoutes);
+app.use("/search", searchRoute);
 
 //routes
 app.get("/", (req, res) => {
   res.send("Welcome to my API");
+});
+
+app.get("/", (req, res) => {
+  res.send("Welocom to Inventory API");
 });
 
 app.listen(PORT, () => {
