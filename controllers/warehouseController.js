@@ -77,9 +77,46 @@ const createWarehouse = async (req, res) => {
 //Put/Edit warehouse
 const changeWarehouse = async (req, res) => {
   try {
+    const warehouseId = req.params.id;
+
+    // Body validation
+    const warehouseData = req.body;
+
+    const data = req.body;
+    if (
+      !data.warehouse_name ||
+      !data.address ||
+      !data.city ||
+      !data.country ||
+      !data.contact_name ||
+      !data.contact_position ||
+      !data.contact_phone ||
+      !data.contact_email
+    ) {
+      return res.status(400).json({
+        message:
+          "Please provide name and email for the warehoue in the request",
+      });
+    }
+    // Check for valid email and phone number
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\+\d{1,2} \(\d{3}\) \d{3}-\d{4}$/;
+    if (!emailRegex.test(data.contact_email)) {
+      return res.status(400).json({
+        message: "Please provide valid email",
+      });
+    } else if (!phoneRegex.test(data.contact_phone)) {
+      return res.status(400).json({
+        message: "Please provide valid phone number",
+      });
+    }
     const rowsUpdated = await knex("warehouses")
-      .where({ id: req.params.id })
+      .where({ id: warehouseId })
       .update(req.body);
+
+    const updatedWarehouse = await knex("warehouses").where({
+      id: warehouseId,
+    });
     if (rowsUpdated === 0) {
       return res
         .status(404)
@@ -89,11 +126,11 @@ const changeWarehouse = async (req, res) => {
     const updateWarehouse = await knex("warehouses").where({
       id: req.params.id,
     });
-    res.json(updateWarehouse);
+    return res.json(updateWarehouse);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: `unable to warehouse user with ID ${req.params.id}` });
+    res.status(500).json({
+      message: `unable to update warehouse user with ID ${req.params.id}`,
+    });
   }
 };
 
