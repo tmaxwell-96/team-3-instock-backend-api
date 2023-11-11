@@ -50,8 +50,20 @@ const getAllInventory = async (_req, res) => {
 
 //POST Create new inventory item
 const createInventory = async (req, res) => {
+  const newInvData = req.body;
+  if (
+    !newInvData.warehouse_id ||
+    !newInvData.item_name ||
+    !newInvData.description ||
+    !newInvData.category ||
+    !newInvData.status ||
+    isNaN(newInvData.quantity)
+  ) {
+    return res
+      .status(400)
+      .json({ message: "Invalid or Incomplete Data in the Request Body" });
+  }
   try {
-    console.log(req.body);
     const newInventoryData = await knex("inventories").insert(req.body);
     const newInventoryId = newInventoryData[0];
     const createdInventory = await knex("inventories").where({
@@ -65,58 +77,63 @@ const createInventory = async (req, res) => {
   }
 };
 
-
 // DELETE Inventory Item by ID (Item/Ids 5 & 6 were erased through test in Postman)
 
 const deleteInventoryById = async (req, res) => {
-  try { 
+  try {
     const inventoryId = req.params.id;
 
-    const inventory = await knex ("inventories").where({id: inventoryId}).first();
+    const inventory = await knex("inventories")
+      .where({ id: inventoryId })
+      .first();
 
     if (!inventory) {
-      return res.status(404).json({message: `Inventory item with ID ${inventoryId} not found` });
+      return res
+        .status(404)
+        .json({ message: `Inventory item with ID ${inventoryId} not found` });
     }
 
     await knex("inventories").where({ id: inventoryId }).del();
 
     res.status(204).send();
-
   } catch (error) {
     console.error(error);
-    res.status(500).json({message: "Error deleting inventory item" });
-
+    res.status(500).json({ message: "Error deleting inventory item" });
   }
 };
-  
 
 // PUT/EDIT Inventory Item (Item Ids 5 & 7 were edited via PUT through test in Postman)
 
 const editInventoryById = async (req, res) => {
   try {
     const inventoryId = req.params.id;
-    const {
-      warehouse_id,
-      item_name,
-      description,
-      category,
-      status,
-      quantity,
-    } = req.body;
+    const { warehouse_id, item_name, description, category, status, quantity } =
+      req.body;
 
-    if (!warehouse_id || !item_name || !description || !category || !status || isNaN(quantity)) {
-      return res.status(400).json({ message: "Invalid or Incomplete Data in the Request Body"});
+    if (
+      !warehouse_id ||
+      !item_name ||
+      !description ||
+      !category ||
+      !status ||
+      isNaN(quantity)
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Invalid or Incomplete Data in the Request Body" });
     }
 
-    const warehouseExists = await knex("warehouses").where({id: inventoryId}).first();
+    const warehouseExists = await knex("warehouses")
+      .where({ id: inventoryId })
+      .first();
 
     if (!warehouseExists) {
-      return res.status(400).json({ message: `Warehouse with ID ${warehouse_id} not found`});
+      return res
+        .status(400)
+        .json({ message: `Warehouse with ID ${warehouse_id} not found` });
     }
 
-    await knex("inventories")
-    .where({id: inventoryId})
-    .update({
+    await knex("inventories").where({ id: inventoryId }).update({
       warehouse_id,
       item_name,
       description,
@@ -125,22 +142,16 @@ const editInventoryById = async (req, res) => {
       quantity,
     });
 
-    const updatedInventory = await knex("inventories").where({id: inventoryId}).first();
+    const updatedInventory = await knex("inventories")
+      .where({ id: inventoryId })
+      .first();
 
     res.status(200).json(updatedInventory);
   } catch (error) {
     console.error(error);
-    res.status(500).json({message: "Error Editing Inventory Item"});
-    }
-  };
-
-
-  
-
-
-
-
-
+    res.status(500).json({ message: "Error Editing Inventory Item" });
+  }
+};
 
 module.exports = {
   getInventoryListByWarehouseById,
@@ -148,5 +159,5 @@ module.exports = {
   createInventory,
   getAllInventory,
   deleteInventoryById,
-  editInventoryById, 
+  editInventoryById,
 };
