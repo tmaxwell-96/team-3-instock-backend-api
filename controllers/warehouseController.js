@@ -3,7 +3,11 @@ const knex = require("knex")(require("../knexfile"));
 //GET: Warehouse List
 const getWarehouseList = async (_req, res) => {
   try {
-    const data = await knex("warehouses");
+    const data = await knex
+    .select('id', 'warehouse_name', 'address','city'
+    ,'country','contact_name','contact_position'
+    ,'contact_phone','contact_email')
+    .from("warehouses");
     res.status(200).json(data);
   } catch (err) {
     res.status(400).send(`Error retrieving Warehouses: ${err}`);
@@ -13,7 +17,10 @@ const getWarehouseList = async (_req, res) => {
 //GET: Warehouse By ID
 const getWarehouseById = async (req, res) => {
   try {
-    const warehouseFound = await knex("warehouses").where({
+    const warehouseFound = await knex.select('id', 'warehouse_name', 'address','city'
+    ,'country','contact_name','contact_position'
+    ,'contact_phone','contact_email')
+    .from("warehouses").where({
       id: req.params.id,
     });
     if (warehouseFound.length === 0) {
