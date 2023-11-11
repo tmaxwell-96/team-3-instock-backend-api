@@ -61,9 +61,33 @@ const createWarehouse = async (req, res) =>{
           });
     }
 }
+
+//DELETE: delete warehouse
+const deleteWarehouse = async (req, res) => {
+  try {
+    const rowsDeleted = await knex("warehouses")
+      .where({ id: req.params.id })
+      .delete();
+
+    if (rowsDeleted === 0) {
+      return res
+        .status(404)
+        .json({ message: `Warehouse with ID ${req.params.id} not found` });
+    }
+
+    // No Content response
+    res.status(200).json({
+      message: "Delete success"});
+  } catch (error) {
+    res.status(500).json({
+      message: `Unable to delete Warehouse: ${error}`
+    });
+  }
+};
   
   module.exports = {
     getWarehouseList,
     getWarehouseById,
-    createWarehouse
+    createWarehouse,
+    deleteWarehouse,
   }
