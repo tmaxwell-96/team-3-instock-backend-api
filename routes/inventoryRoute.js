@@ -16,5 +16,8 @@ router.route("/:id").delete(inventoryController.deleteInventoryById);
 
 router.route("/:id").put(inventoryController.editInventoryById);
 
+//sort inventory
+router.route("/sortInventory/sort").get(inventoryController.sortByColumnName);
+
 
 module.exports = router;

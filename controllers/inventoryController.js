@@ -153,6 +153,21 @@ const editInventoryById = async (req, res) => {
   }
 };
 
+const sortByColumnName = async (req, res) =>{
+  try{
+    const { sort_by, order_by } = req.query;
+    const sortData = await knex("inventories")
+    .join("warehouses", "warehouses.id", "inventories.warehouse_id")
+    .orderBy(sort_by, order_by);
+    res.status(200).json(sortData);
+  }catch(error){
+    res.status(500).json({
+      message: `Error:  Unknown column ${error}`,
+    });
+  }
+ 
+}
+
 module.exports = {
   getInventoryListByWarehouseById,
   getInventoryById,
@@ -160,4 +175,5 @@ module.exports = {
   getAllInventory,
   deleteInventoryById,
   editInventoryById,
+  sortByColumnName,
 };
