@@ -124,7 +124,7 @@ const editInventoryById = async (req, res) => {
     }
 
     const warehouseExists = await knex("warehouses")
-      .where({ id: inventoryId })
+      .where({ id: warehouse_id })
       .first();
 
     if (!warehouseExists) {
