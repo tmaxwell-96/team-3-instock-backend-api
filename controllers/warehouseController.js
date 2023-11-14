@@ -56,7 +56,7 @@ const createWarehouse = async (req, res) => {
   }
   // Check for valid email and phone number
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const phoneRegex = /^\+\d{1,2} \(\d{3}\) \d{3}-\d{4}$/;
+  const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
   if (!emailRegex.test(data.contact_email)) {
     return res.status(400).json({
       message: "Please provide valid email",
